@@ -62,11 +62,13 @@ public sealed class BrowserSmokeTests
             await page.GetByText("cache hit", new() { Exact = true }).WaitForAsync();
 
             const string suggestedQuestion = "What does the Aspire AppHost coordinate?";
-            await page.GetByRole(AriaRole.Button, new()
+            var topicButton = page.GetByRole(AriaRole.Button, new()
             {
                 Name = $"AppHost orchestration {suggestedQuestion}",
                 Exact = true
-            }).ClickAsync();
+            });
+            await Assertions.Expect(topicButton).ToBeEnabledAsync(new() { Timeout = 10_000 });
+            await topicButton.ClickAsync();
             Assert.Equal(suggestedQuestion, await page.GetByLabel("Question").InputValueAsync());
 
             var vectorLabel = page.Locator(".status-card dt").Filter(new() { HasText = "Vectors" });

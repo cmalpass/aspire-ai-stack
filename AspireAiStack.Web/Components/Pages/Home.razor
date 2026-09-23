@@ -64,7 +64,7 @@
                     @foreach (var topic in _topics)
                     {
                         <li>
-                            <button class="seeded-topic" type="button" @onclick="() => SelectTopic(topic.SuggestedQuestion)">
+                            <button class="seeded-topic" type="button" @onclick="() => SelectTopic(topic.SuggestedQuestion)" disabled="@(!_isInteractive)">
                                 <strong>@topic.Title</strong>
                                 <span>@topic.SuggestedQuestion</span>
                             </button>
@@ -80,8 +80,8 @@
 
     <form @onsubmit="AskAsync" @onsubmit:preventDefault>
         <label for="prompt">Question</label>
-        <textarea id="prompt" @bind="_prompt" rows="4" placeholder="How does Aspire connect the API to Qdrant?"></textarea>
-        <button class="btn btn-primary" type="submit" disabled="@_isLoading">
+        <textarea id="prompt" @bind="_prompt" rows="4" placeholder="How does Aspire connect the API to Qdrant?" disabled="@(!_isInteractive)"></textarea>
+        <button class="btn btn-primary" type="submit" disabled="@(!_isInteractive || _isLoading)">
             @(_isLoading ? "Asking…" : "Ask the stack")
         </button>
     </form>
@@ -91,7 +91,7 @@
         <p class="alert alert-danger" role="alert">@_error</p>
         @if (_initializationFailed)
         {
-            <button class="btn btn-secondary" type="button" @onclick="LoadAsync" disabled="@_isInitializing">
+            <button class="btn btn-secondary" type="button" @onclick="LoadAsync" disabled="@(!_isInteractive || _isInitializing)">
                 @(_isInitializing ? "Retrying…" : "Retry loading the demo")
             </button>
         }
@@ -133,8 +133,20 @@
     private bool _isLoading;
     private bool _isInitializing;
     private bool _initializationFailed;
+    private bool _isInteractive;
 
     protected override Task OnInitializedAsync() => LoadAsync();
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isInteractive = true;
+            StateHasChanged();
+        }
+
+        return Task.CompletedTask;
+    }
 
     private async Task LoadAsync()
     {
