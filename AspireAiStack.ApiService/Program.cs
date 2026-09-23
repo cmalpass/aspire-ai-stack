@@ -42,7 +42,7 @@ if (string.Equals(aiMode, "ollama", StringComparison.OrdinalIgnoreCase))
     var model = builder.Configuration["AI:Model"] ?? "phi3:mini";
 
     builder.Services.AddChatClient(services =>
-        ((IChatClient)new OllamaApiClient(new Uri(ollamaEndpoint), model))
+        ((IChatClient)new OllamaApiClient(OllamaConnectionString.ResolveEndpoint(ollamaEndpoint), model))
             .AsBuilder()
             .UseOpenTelemetry(services.GetRequiredService<ILoggerFactory>(), sourceName: "AspireAiStack.AI")
             .Build());

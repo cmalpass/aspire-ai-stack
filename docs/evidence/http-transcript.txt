@@ -1,0 +1,27 @@
+POST /api/chat
+Content-Type: application/json
+
+{
+  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-110938."
+}
+
+HTTP 200 OK
+Date: Wed, 23 Sep 2026 11:09:45 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"answer":"Aspire service references facilitate the connection between AI applications by providing essential connection information. They ensure a consuming service only starts after the required dependencies report as ready or healthy, which is vital for maintaining a robust system. By doing so, it ensures the AI application can rely on other services being operational before it commences, which is crucial for consistent and accurate AI behavior [2].","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":false,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.22211304},{"title":"Service references","content":"WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy.","relevance":0.20597567},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.17785615}]}
+
+POST /api/chat (same prompt; cache verification)
+Content-Type: application/json
+
+{
+  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-110938."
+}
+
+HTTP 200 OK
+Date: Wed, 23 Sep 2026 11:09:45 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"answer":"Aspire service references facilitate the connection between AI applications by providing essential connection information. They ensure a consuming service only starts after the required dependencies report as ready or healthy, which is vital for maintaining a robust system. By doing so, it ensures the AI application can rely on other services being operational before it commences, which is crucial for consistent and accurate AI behavior [2].","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":true,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.22211304},{"title":"Service references","content":"WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy.","relevance":0.20597567},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.17785615}]}

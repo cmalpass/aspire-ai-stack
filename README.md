@@ -65,7 +65,29 @@ dotnet build AspireAiStack.sln --configuration Release
 dotnet test AspireAiStack.sln --configuration Release --no-build
 ```
 
-The eight tests cover deterministic embeddings, retrieval ordering, cache-key normalization, API validation and cache behavior, the Blazor status component, and an AppHost-managed API-to-web startup flow.
+The test suite covers deterministic embeddings, retrieval ordering, cache-key normalization, Ollama connection-string parsing, API validation and cache behavior, the Blazor status component, an AppHost-managed API-to-web startup flow, and the Chromium smoke path.
+
+### Browser smoke test
+
+The ordinary test suite also drives the credential-free flow in headless Chromium and records a screenshot plus a Playwright trace. Install the matching browser once after building:
+
+```bash
+dotnet build AspireAiStack.sln --configuration Release
+pwsh AspireAiStack.Tests/bin/Release/net10.0/playwright.ps1 install chromium
+dotnet test AspireAiStack.sln --configuration Release --no-build
+```
+
+CI uploads the browser screenshot, trace, and TRX results as a `browser-smoke-evidence` artifact.
+
+### Capture real-model evidence
+
+The live evidence test is intentionally opt-in because it starts Redis, Qdrant, and Ollama containers and downloads `phi3:mini` on the first run. It exercises a fresh model response and a Redis cache hit through both HTTP and the Blazor UI:
+
+```bash
+./scripts/capture-live-model-evidence.sh
+```
+
+The script writes curated JSON, an HTTP transcript, and fresh/cache-hit screenshots to `docs/evidence/`. The live test is skipped during ordinary `dotnet test` and CI runs; set `RUN_LIVE_MODEL_E2E=true` only when Docker has enough time and disk space for the model.
 
 ## Production boundary
 
