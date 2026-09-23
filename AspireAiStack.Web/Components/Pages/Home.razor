@@ -49,10 +49,11 @@
         <div class="demo-expectation">
             <h3>What you should see</h3>
             <ol>
-                <li>Submit the prefilled question and look for a <strong>fresh response</strong> with three retrieved context items.</li>
+                <li>Append a short unique suffix to the question, submit it, and look for a <strong>fresh response</strong> with three retrieved context items.</li>
                 <li>Submit the same question again and look for <strong>cache hit</strong> with the identical answer.</li>
-                <li>Choose a seeded topic below; its suggested question will replace the prompt and produce a fresh response.</li>
+                <li>Choose a seeded topic below to replace the prompt with a question the catalog is prepared to answer.</li>
             </ol>
+            <p>A question asked earlier can return a cache hit immediately. The unique suffix guarantees a new cache key for the walkthrough.</p>
             <p>The first Qdrant-backed request can take a little longer while the seven demo notes are seeded.</p>
         </div>
         @if (_topics.Count > 0)

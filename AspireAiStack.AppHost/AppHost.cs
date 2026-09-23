@@ -22,11 +22,10 @@ var useLocalModel = bool.TryParse(builder.Configuration["Demo:UseLocalModel"], o
     : builder.ExecutionContext.IsPublishMode;
 
 IResourceBuilder<ProjectResource> apiService;
-IResourceBuilder<RedisResource>? cache = null;
 
 if (useContainers)
 {
-    cache = builder.AddRedis("cache")
+    var cache = builder.AddRedis("cache")
         .WithLifetime(ContainerLifetime.Persistent);
 
     var qdrant = builder.AddQdrant("qdrant")

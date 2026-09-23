@@ -43,11 +43,11 @@ Open the dashboard URL printed in the terminal, then select the `webfrontend` en
 
 For the verified walkthrough:
 
-1. Select **AppHost orchestration** or use the prefilled question.
+1. Select **AppHost orchestration** or use the prefilled question, then append a short unique suffix such as your initials and the current time.
 2. Submit it and expect a **fresh response** with three retrieved context records.
 3. Submit the same question again and expect the identical answer with **cache hit**.
 
-The first Qdrant-backed request can take a little longer while the seven records are created or refreshed. The runtime card shows which AI, vector-store, and cache implementations are active.
+An exact question asked earlier can return a cache hit immediately; the suffix gives the walkthrough a new cache key. The first Qdrant-backed request can take a little longer while the seven records are created or refreshed. The runtime card shows which AI, vector-store, and cache implementations are active.
 
 The default resource graph is:
 
@@ -97,6 +97,7 @@ That mode substitutes deterministic in-memory vector search and response caching
 
 ```bash
 dotnet build AspireAiStack.sln --configuration Release
+pwsh AspireAiStack.Tests/bin/Release/net10.0/playwright.ps1 install chromium
 dotnet test AspireAiStack.sln --configuration Release --no-build
 ```
 
@@ -104,13 +105,7 @@ The test suite covers deterministic embeddings, retrieval ordering, cache-key no
 
 ### Browser smoke test
 
-The ordinary test suite also drives the credential-free flow in headless Chromium and records a screenshot plus a Playwright trace. Install the matching browser once after building:
-
-```bash
-dotnet build AspireAiStack.sln --configuration Release
-pwsh AspireAiStack.Tests/bin/Release/net10.0/playwright.ps1 install chromium
-dotnet test AspireAiStack.sln --configuration Release --no-build
-```
+The ordinary test suite also drives the credential-free flow in headless Chromium and records a screenshot plus a Playwright trace. The verification commands above install the matching browser; on later runs, you can go straight to `dotnet test` unless the Playwright package version changes.
 
 CI uploads the browser screenshot, trace, and TRX results as a `browser-smoke-evidence` artifact.
 
@@ -126,7 +121,7 @@ The script writes curated JSON, an HTTP transcript, and fresh/cache-hit screensh
 
 ## Swap the model provider
 
-The browser and `AiAssistantService` depend on the API's `IAnswerGenerator`, while the Ollama implementation receives `Microsoft.Extensions.AI.IChatClient`. To use Azure OpenAI or another provider, replace the `AddChatClient` registration in `AspireAiStack.ApiService/Program.cs`, keep credentials in server-side configuration, and leave the browser contract unchanged. Include the provider, model version, generation settings, and grounding-corpus version in any production cache key.
+The browser calls only the API. Inside the API, `AiAssistantService` depends on `IAnswerGenerator`, and `OllamaAnswerGenerator` receives `Microsoft.Extensions.AI.IChatClient`. To use Azure OpenAI or another provider, extend the provider-selection branch in `AspireAiStack.ApiService/Program.cs`, register that provider's `IChatClient`, and report the matching `AI:Mode` value in the status response. Keep credentials in server-side configuration; the browser contract does not need to change. Include the provider, model version, generation settings, and grounding-corpus version in any production cache key.
 
 ## Troubleshooting
 
