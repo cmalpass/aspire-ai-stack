@@ -1,6 +1,6 @@
 # Aspire AI Stack
 
-A runnable .NET 10 and Aspire 13.5.3 companion for the article [**Building Local AI Applications with .NET Aspire**](https://chrismalpass.com/posts/building-ai-applications-dotnet-aspire/).
+A runnable .NET 10 and Aspire 13.5.3 companion for the article [**Building Local AI Applications with .NET Aspire**](https://chrismalpass.net/posts/building-ai-applications-dotnet-aspire/).
 
 The sample keeps the application boundaries visible:
 
