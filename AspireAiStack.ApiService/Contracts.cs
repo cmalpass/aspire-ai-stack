@@ -18,4 +18,10 @@ public sealed record StackStatus(
     string Cache,
     bool SafeDefault);
 
-public sealed record KnowledgeDocument(ulong Id, string Title, string Content);
+public sealed record KnowledgeDocument(
+    ulong Id,
+    string Title,
+    string Content,
+    string SuggestedQuestion);
+
+public sealed record KnowledgeTopic(string Title, string SuggestedQuestion);

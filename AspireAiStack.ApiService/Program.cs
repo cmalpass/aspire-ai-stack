@@ -77,6 +77,10 @@ app.MapGet("/api/status", (IKnowledgeStore knowledgeStore, IResponseCache respon
         Cache: responseCache.Name,
         SafeDefault: string.Equals(aiMode, "simulated", StringComparison.OrdinalIgnoreCase))));
 
+app.MapGet("/api/knowledge/topics", () =>
+    Results.Ok(KnowledgeCatalog.Documents.Select(document =>
+        new KnowledgeTopic(document.Title, document.SuggestedQuestion))));
+
 app.MapPost("/api/chat", async (
     ChatRequest request,
     AiAssistantService assistant,

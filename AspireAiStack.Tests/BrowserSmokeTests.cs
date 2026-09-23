@@ -52,6 +52,12 @@ public sealed class BrowserSmokeTests
             {
                 Name = "What you should see"
             }).WaitForAsync();
+            await page.GetByRole(AriaRole.Heading, new()
+            {
+                Name = "Seeded topics you can ask about"
+            }).WaitForAsync();
+            await page.GetByText("AppHost orchestration", new() { Exact = true }).WaitForAsync();
+            await page.GetByText("How does Redis handle repeated responses?", new() { Exact = true }).WaitForAsync();
             await page.GetByText("fresh response", new() { Exact = true }).WaitForAsync();
             await page.GetByText("cache hit", new() { Exact = true }).WaitForAsync();
 

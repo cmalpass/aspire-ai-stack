@@ -1,19 +1,19 @@
 {
-  "capturedAtUtc": "2026-09-23T14:52:17.853065+00:00",
-  "endpoint": "http://localhost:50555",
+  "capturedAtUtc": "2026-09-23T14:57:42.954587+00:00",
+  "endpoint": "http://localhost:51357",
   "health": {
     "statusCode": 200,
     "status": "OK"
   },
-  "prompt": "How does one Compose file make an AI application easier to inspect? Evidence run 20260923-145159.",
+  "prompt": "How does one Compose file make an AI application easier to inspect? Evidence run 20260923-145714.",
   "fresh": {
-    "answer": "In the Aspire AppHost orchestration, the Compose file makes an AI application easier to inspect by declaring services, containers, dependencies, startup order, and endpoints in one application model [3]. This consolidated information allows for better visibility and understanding of the application\u0027ran configuration, contributing to smoother inspection and maintenance processes [1][2].",
+    "answer": "The Compose file helps break down an AI application into manageable components, such as services, containers, and endpoints, making it easier to inspect. By clearly defining these elements and their dependencies, the Compose file ensures that the application runs as intended [1]. In the context of AI applications like Aspire, the Compose file\u0027s orchestration capabilities facilitate the setup of production environments with reusable models, while still allowing customization for identity, persistence, scaling, backups, and managed services [3]. Additionally, the integration of vector search in Qdrant and its application in relevant grounding passages retrieval before the model generates an answer demonstrates the importance of inspecting and understanding the data used by the AI application [2].",
     "sourceCount": 3,
     "cacheHit": false,
     "screenshot": "compose-ui-fresh.png"
   },
   "cached": {
-    "answer": "In the Aspire AppHost orchestration, the Compose file makes an AI application easier to inspect by declaring services, containers, dependencies, startup order, and endpoints in one application model [3]. This consolidated information allows for better visibility and understanding of the application\u0027ran configuration, contributing to smoother inspection and maintenance processes [1][2].",
+    "answer": "The Compose file helps break down an AI application into manageable components, such as services, containers, and endpoints, making it easier to inspect. By clearly defining these elements and their dependencies, the Compose file ensures that the application runs as intended [1]. In the context of AI applications like Aspire, the Compose file\u0027s orchestration capabilities facilitate the setup of production environments with reusable models, while still allowing customization for identity, persistence, scaling, backups, and managed services [3]. Additionally, the integration of vector search in Qdrant and its application in relevant grounding passages retrieval before the model generates an answer demonstrates the importance of inspecting and understanding the data used by the AI application [2].",
     "sourceCount": 3,
     "cacheHit": true,
     "screenshot": "compose-ui-cache-hit.png"

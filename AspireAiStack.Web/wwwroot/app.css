@@ -172,6 +172,51 @@ dd { margin: 0; }
 
 .demo-expectation li + li { margin-top: .65rem; }
 
+.seeded-topics {
+    margin-top: 1.5rem;
+}
+
+.seeded-topics h3 {
+    font-size: 1.05rem;
+    margin-bottom: .35rem;
+}
+
+.seeded-topics > p {
+    color: #8096ac;
+    font-size: .9rem;
+}
+
+.seeded-topic-list {
+    display: grid;
+    gap: .55rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.seeded-topic {
+    background: #102a46;
+    border: 1px solid #244f74;
+    border-radius: 10px;
+    color: #dce9f6;
+    display: block;
+    padding: .7rem .85rem;
+    text-align: left;
+    width: 100%;
+}
+
+.seeded-topic:hover, .seeded-topic:focus-visible {
+    background: #153b5f;
+    border-color: #63d9ff;
+}
+
+.seeded-topic span {
+    color: #9fb1c3;
+    display: block;
+    font-size: .86rem;
+    margin-top: .25rem;
+}
+
 .demo-note {
     color: #8096ac;
     font-size: .9rem;

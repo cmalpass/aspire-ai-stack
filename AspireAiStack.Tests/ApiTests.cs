@@ -26,6 +26,21 @@ public sealed class ApiTests : IClassFixture<ApiTests.ApiFactory>
     }
 
     [Fact]
+    public async Task KnowledgeTopics_ExposeTheSeededCatalogQuestions()
+    {
+        var topics = await _client.GetFromJsonAsync<IReadOnlyList<KnowledgeTopic>>(
+            "/api/knowledge/topics",
+            CancellationToken.None);
+
+        Assert.NotNull(topics);
+        Assert.Equal(KnowledgeCatalog.Documents.Count, topics.Count);
+        Assert.Equal(
+            KnowledgeCatalog.Documents.Select(document => document.Title),
+            topics.Select(topic => topic.Title));
+        Assert.All(topics, topic => Assert.False(string.IsNullOrWhiteSpace(topic.SuggestedQuestion)));
+    }
+
+    [Fact]
     public async Task Chat_ReturnsGroundedAnswerThenCacheHit()
     {
         var prompt = $"How does Aspire wiring work? {Guid.NewGuid():N}";

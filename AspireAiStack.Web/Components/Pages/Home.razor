@@ -42,9 +42,27 @@
             <ol>
                 <li>Submit the prefilled question and look for a <strong>fresh response</strong> with three retrieved context items.</li>
                 <li>Submit the same question again and look for <strong>cache hit</strong> with the identical answer.</li>
-                <li>Change the topic to explore another seeded note; a new question should produce a fresh response.</li>
+                <li>Choose a seeded topic below; its suggested question will replace the prompt and produce a fresh response.</li>
             </ol>
         </div>
+        @if (_topics.Count > 0)
+        {
+            <div class="seeded-topics">
+                <h3>Seeded topics you can ask about</h3>
+                <p>These suggestions come from the same catalog used to ground the answer.</p>
+                <ul class="seeded-topic-list">
+                    @foreach (var topic in _topics)
+                    {
+                        <li>
+                            <button class="seeded-topic" type="button" @onclick="() => SelectTopic(topic.SuggestedQuestion)">
+                                <strong>@topic.Title</strong>
+                                <span>@topic.SuggestedQuestion</span>
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
         <p class="demo-note">
             The default mode is deterministic and credential-free. Enable Ollama for real local model generation.
         </p>
@@ -92,6 +110,7 @@
 @code {
     private string _prompt = "How does Aspire connect the API to Qdrant?";
     private StackStatus? _status;
+    private IReadOnlyList<KnowledgeTopic> _topics = [];
     private ChatResponse? _response;
     private string? _error;
     private bool _isLoading;
@@ -101,11 +120,19 @@
         try
         {
             _status = await ApiClient.GetStatusAsync();
+            _topics = await ApiClient.GetTopicsAsync();
         }
         catch (HttpRequestException)
         {
             _error = "The API is not ready yet. Check the Aspire dashboard and retry.";
         }
+    }
+
+    private void SelectTopic(string question)
+    {
+        _prompt = question;
+        _response = null;
+        _error = null;
     }
 
     private async Task AskAsync()
