@@ -151,6 +151,33 @@ dd { margin: 0; }
 
 .demo-panel form, .response-card { grid-column: 2; }
 
+.demo-expectation {
+    background: rgba(6, 16, 29, .72);
+    border-left: 3px solid #63d9ff;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+}
+
+.demo-expectation h3 {
+    font-size: 1.05rem;
+    margin-bottom: .7rem;
+}
+
+.demo-expectation ol {
+    color: #adc0d4;
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.demo-expectation li + li { margin-top: .65rem; }
+
+.demo-note {
+    color: #8096ac;
+    font-size: .9rem;
+    margin: 1.2rem 0 0;
+}
+
 label { display: block; font-weight: 700; margin-bottom: .55rem; }
 
 textarea {

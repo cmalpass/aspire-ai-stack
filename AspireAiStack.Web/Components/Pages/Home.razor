@@ -33,7 +33,21 @@
     <div class="demo-copy">
         <p class="eyebrow">Try the verified first-run flow</p>
         <h2>Ask about the architecture</h2>
-        <p>The safe default is deterministic and credential-free. Repeat the question to see the cache hit.</p>
+        <p>
+            This demo uses seven preloaded architecture notes covering Aspire orchestration,
+            service references, observability, local AI, vector search, caching, and production boundaries.
+        </p>
+        <div class="demo-expectation">
+            <h3>What you should see</h3>
+            <ol>
+                <li>Submit the prefilled question and look for a <strong>fresh response</strong> with three retrieved context items.</li>
+                <li>Submit the same question again and look for <strong>cache hit</strong> with the identical answer.</li>
+                <li>Change the topic to explore another seeded note; a new question should produce a fresh response.</li>
+            </ol>
+        </div>
+        <p class="demo-note">
+            The default mode is deterministic and credential-free. Enable Ollama for real local model generation.
+        </p>
     </div>
 
     <form @onsubmit="AskAsync" @onsubmit:preventDefault>

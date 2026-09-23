@@ -48,6 +48,12 @@ public sealed class BrowserSmokeTests
                 Name = "Orchestrate the whole AI stack without hiding its boundaries."
             }).WaitForAsync();
             await page.GetByText("simulated", new() { Exact = true }).WaitForAsync();
+            await page.GetByRole(AriaRole.Heading, new()
+            {
+                Name = "What you should see"
+            }).WaitForAsync();
+            await page.GetByText("fresh response", new() { Exact = true }).WaitForAsync();
+            await page.GetByText("cache hit", new() { Exact = true }).WaitForAsync();
 
             var vectorLabel = page.Locator(".status-card dt").Filter(new() { HasText = "Vectors" });
             var vectorValue = page.Locator(".status-card dd").Filter(new()
