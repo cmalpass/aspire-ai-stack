@@ -28,8 +28,8 @@ The evidence-capture scripts also check for PowerShell (`pwsh`), ripgrep (`rg`),
 | Goal | Command | What runs |
 | --- | --- | --- |
 | Normal development | `dotnet run --project AspireAiStack.AppHost` | Real Redis and Qdrant, deterministic generation |
-| Fastest credential-free check | Add `-- --Demo:UseContainers=false` | In-memory retrieval and cache, deterministic generation |
-| Real local generation | Add `-- --Demo:UseLocalModel=true` | Redis, Qdrant, Ollama, and `phi3:mini` |
+| Fastest credential-free check | `dotnet run --project AspireAiStack.AppHost -- --Demo:UseContainers=false` | In-memory retrieval and cache, deterministic generation |
+| Real local generation | `dotnet run --project AspireAiStack.AppHost -- --Demo:UseLocalModel=true` | Redis, Qdrant, Ollama, and `phi3:mini` |
 | Full Compose proof | `./scripts/capture-compose-evidence.sh` | Generated seven-service Compose project plus browser evidence |
 
 ## Run the stack
