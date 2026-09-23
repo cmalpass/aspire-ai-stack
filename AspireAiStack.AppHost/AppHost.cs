@@ -91,11 +91,4 @@ if (builder.ExecutionContext.IsPublishMode)
     web.WithEnvironment("Demo__DashboardUrl", "http://localhost:18888");
 }
 
-if (cache is not null)
-{
-    web
-        .WithReference(cache)
-        .WaitFor(cache);
-}
-
 builder.Build().Run();

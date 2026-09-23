@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <!--
+      The ApiService project uses OllamaSharp 5.4.30 without its optional
+      generator. Its analyzer still flows through the project reference during
+      test compilation and targets a newer Roslyn version than SDK 10.0.101.
+    -->
+    <NoWarn>$(NoWarn);CS9057</NoWarn>
   </PropertyGroup>
 
 

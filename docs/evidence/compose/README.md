@@ -16,11 +16,10 @@ The point is to make each claim inspectable rather than relying on a single scre
 
 | Artifact | Claim it supports |
 | --- | --- |
-| [`compose-run.json`](compose-run.json) | Health status, fresh/cache flags, source count, and identical answers |
+| [`compose-run.json`](compose-run.json) | Health status, verified dashboard link, fresh/cache flags, source count, and identical answers |
 | [`compose-containers.json`](compose-containers.json) | The running Compose project and its service/image identities, including the completed model loader |
 | [`compose-ui-fresh.png`](compose-ui-fresh.png) | Live Ollama response, Qdrant sources, Redis status, and `FRESH RESPONSE` |
 | [`compose-ui-cache-hit.png`](compose-ui-cache-hit.png) | The repeated request and visible `CACHE HIT` state |
-| [`compose-run.json`](compose-run.json) | The homepage dashboard link target and its verification |
 | [`compose-trace.zip`](compose-trace.zip) | Playwright DOM snapshots, screenshots, and browser activity |
 
 ## How it maps to the article

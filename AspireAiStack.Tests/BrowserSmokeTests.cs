@@ -61,6 +61,14 @@ public sealed class BrowserSmokeTests
             await page.GetByText("fresh response", new() { Exact = true }).WaitForAsync();
             await page.GetByText("cache hit", new() { Exact = true }).WaitForAsync();
 
+            const string suggestedQuestion = "What does the Aspire AppHost coordinate?";
+            await page.GetByRole(AriaRole.Button, new()
+            {
+                Name = $"AppHost orchestration {suggestedQuestion}",
+                Exact = true
+            }).ClickAsync();
+            Assert.Equal(suggestedQuestion, await page.GetByLabel("Question").InputValueAsync());
+
             var vectorLabel = page.Locator(".status-card dt").Filter(new() { HasText = "Vectors" });
             var vectorValue = page.Locator(".status-card dd").Filter(new()
             {
@@ -74,7 +82,6 @@ public sealed class BrowserSmokeTests
                 valueBox.X >= labelBox.X + labelBox.Width + 8,
                 "The vector-store value should not crowd or overlap its label.");
 
-            await page.GetByLabel("Question").FillAsync("How does Aspire connect the API to Qdrant?");
             await page.GetByRole(AriaRole.Button, new() { Name = "Ask the stack" }).ClickAsync();
             await page.Locator(".response-card").WaitForAsync();
 

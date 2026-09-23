@@ -40,6 +40,8 @@ compose-dashboard (OTLP traces)
 
 The Compose dashboard is bound to `http://localhost:18888`. The web app receives that URL during the published Compose deployment and shows an **Open the Aspire dashboard** link on its homepage, next to the runtime status card. Use that link after the stack starts to review service health, logs, traces, and metrics for the same run.
 
+If port `18888` is already in use, stop the conflicting process or Compose project before deployment. `capture-compose-evidence.sh` prints the generated project name, deployment directory, and exact `docker compose ... down` command so the inspected stack can be removed cleanly afterward.
+
 The model loader is explicit because a logical Aspire model resource is not itself a long-running Compose service. The loader shares the Ollama data volume, waits for Ollama, and must complete successfully before the API starts.
 
 ## Direct Compose use

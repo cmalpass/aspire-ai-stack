@@ -2,26 +2,26 @@ POST /api/chat
 Content-Type: application/json
 
 {
-  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-110938."
+  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-164923."
 }
 
 HTTP 200 OK
-Date: Wed, 23 Sep 2026 11:09:45 GMT
+Date: Wed, 23 Sep 2026 16:49:49 GMT
 Server: Kestrel
 Transfer-Encoding: chunked
 
-{"answer":"Aspire service references facilitate the connection between AI applications by providing essential connection information. They ensure a consuming service only starts after the required dependencies report as ready or healthy, which is vital for maintaining a robust system. By doing so, it ensures the AI application can rely on other services being operational before it commences, which is crucial for consistent and accurate AI behavior [2].","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":false,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.22211304},{"title":"Service references","content":"WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy.","relevance":0.20597567},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.17785615}]}
+{"answer":"Aspire service references facilitate AI applications by enabling seamless communication with various backend services. Through the Aspire AppHost, services are declared along with their containers, dependencies, and startup order, as stated in [2]. This streamlines the development process by allowing developers to manage complex service dependencies within a single model. Additionally, built-in observability via OpenTelemetry, as mentioned in [1], provides valuable insights into the application's performance, aiding in debugging and optimization. Furthermore, caching mechanisms, particularly using Redis, can improve response times and efficiency for frequently accessed data or computations, as highlighted in [3]. Overall, Aspire service references contribute to more efficient and maintainable AI application development.\n\nReferences: [1][2][3]","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":false,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.2782787},{"title":"AppHost orchestration","content":"The Aspire AppHost declares services, containers, dependencies, startup order, and endpoints in one application model.","relevance":0.17064789},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.13742569}]}
 
 POST /api/chat (same prompt; cache verification)
 Content-Type: application/json
 
 {
-  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-110938."
+  "prompt": "Explain how Aspire service references help an AI application. Evidence run 20260923-164923."
 }
 
 HTTP 200 OK
-Date: Wed, 23 Sep 2026 11:09:45 GMT
+Date: Wed, 23 Sep 2026 16:49:49 GMT
 Server: Kestrel
 Transfer-Encoding: chunked
 
-{"answer":"Aspire service references facilitate the connection between AI applications by providing essential connection information. They ensure a consuming service only starts after the required dependencies report as ready or healthy, which is vital for maintaining a robust system. By doing so, it ensures the AI application can rely on other services being operational before it commences, which is crucial for consistent and accurate AI behavior [2].","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":true,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.22211304},{"title":"Service references","content":"WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy.","relevance":0.20597567},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.17785615}]}
+{"answer":"Aspire service references facilitate AI applications by enabling seamless communication with various backend services. Through the Aspire AppHost, services are declared along with their containers, dependencies, and startup order, as stated in [2]. This streamlines the development process by allowing developers to manage complex service dependencies within a single model. Additionally, built-in observability via OpenTelemetry, as mentioned in [1], provides valuable insights into the application's performance, aiding in debugging and optimization. Furthermore, caching mechanisms, particularly using Redis, can improve response times and efficiency for frequently accessed data or computations, as highlighted in [3]. Overall, Aspire service references contribute to more efficient and maintainable AI application development.\n\nReferences: [1][2][3]","aiMode":"ollama","vectorStore":"Qdrant","cache":"Redis","cacheHit":true,"sources":[{"title":"Built-in observability","content":"Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.","relevance":0.2782787},{"title":"AppHost orchestration","content":"The Aspire AppHost declares services, containers, dependencies, startup order, and endpoints in one application model.","relevance":0.17064789},{"title":"Caching","content":"Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.","relevance":0.13742569}]}

@@ -1,11 +1,11 @@
 [
   {
     "Command": "\"dotnet /app/AspireA…\"",
-    "CreatedAt": "2026-09-23 10:57:00 -0400 EDT",
+    "CreatedAt": "2026-09-23 12:51:51 -0400 EDT",
     "HealthStatus": "none",
-    "ID": "93df91d33f8f",
-    "Image": "webfrontend:aspire-deploy-20260923145652",
-    "Labels": "com.docker.compose.config-hash=ac4b9ff390177e5fb31923dfd02e7bb2ff3524e40f32e6cbac57f7a815ec9367,com.docker.compose.container-number=1,com.docker.compose.depends_on=apiservice:service_started:false,cache:service_started:false,com.docker.compose.image=sha256:7371abb9290ab094208edec7bd69ce558ae38338f853cc6093e646b15e81f563,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-topic-refresh.1dqzFV/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-topic-refresh.1dqzFV/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-topic-refresh.1dqzFV,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=webfrontend-1,com.docker.compose.service=webfrontend,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=:,net.dot.runtime.majorminor=10.0,net.dot.sdk.version=10.0.101,org.opencontainers.artifact.created=2026-09-23T14:56:54.4438320Z,org.opencontainers.image.authors=AspireAiStack.Web,org.opencontainers.image.base.digest=sha256:ed6a2d26633ddcd3d42a1d9f9866214ecbbc11ba6ac5e0e843da02c13da24072,org.opencontainers.image.base.name=mcr.microsoft.com/dotnet/aspnet:10.0,org.opencontainers.image.created=2026-09-23T14:56:54.4438320Z,org.opencontainers.image.version=1.0.0",
+    "ID": "c96aa7046bc5",
+    "Image": "webfrontend:aspire-deploy-20260923165141",
+    "Labels": "com.docker.compose.config-hash=d73773795088c78a9e215b0c895f642c44976031bc0c06e5599e908564a3bd8f,com.docker.compose.container-number=1,com.docker.compose.depends_on=apiservice:service_started:false,com.docker.compose.image=sha256:85435a1ceb060db910e7d16aff9a983d3038ceb6025f9ac1ac680b2d87cf64ab,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-evidence.Si5X3e/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-evidence.Si5X3e/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-evidence.Si5X3e,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=webfrontend-1,com.docker.compose.service=webfrontend,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8080/tcp=:,net.dot.runtime.majorminor=10.0,net.dot.sdk.version=10.0.101,org.opencontainers.artifact.created=2026-09-23T16:51:49.0352240Z,org.opencontainers.image.authors=AspireAiStack.Web,org.opencontainers.image.base.digest=sha256:ed6a2d26633ddcd3d42a1d9f9866214ecbbc11ba6ac5e0e843da02c13da24072,org.opencontainers.image.base.name=mcr.microsoft.com/dotnet/aspnet:10.0,org.opencontainers.image.created=2026-09-23T16:51:49.0352240Z,org.opencontainers.image.version=1.0.0",
     "LocalVolumes": "0",
     "Mounts": "",
     "Names": "aspire-compose-b43b0c4d-webfrontend-1",
@@ -14,19 +14,19 @@
       "architecture": "amd64",
       "os": "linux"
     },
-    "Ports": "0.0.0.0:51357->8080/tcp, [::]:51357->8080/tcp",
-    "RunningFor": "49 seconds ago",
-    "Size": "41kB (virtual 260MB)",
+    "Ports": "0.0.0.0:54738->8080/tcp, [::]:54738->8080/tcp",
+    "RunningFor": "2 seconds ago",
+    "Size": "28.7kB (virtual 259MB)",
     "State": "running",
-    "Status": "Up 47 seconds"
+    "Status": "Up Less than a second"
   },
   {
     "Command": "\"dotnet /app/AspireA…\"",
-    "CreatedAt": "2026-09-23 10:56:59 -0400 EDT",
+    "CreatedAt": "2026-09-23 12:51:50 -0400 EDT",
     "HealthStatus": "none",
-    "ID": "55c9d9f7543d",
-    "Image": "apiservice:aspire-deploy-20260923145652",
-    "Labels": "com.docker.compose.config-hash=cbc5835e8610b4e1c00d5d7003a5a3e5522cc97804839265d629ce74c9839445,com.docker.compose.container-number=1,com.docker.compose.depends_on=ollama:service_started:false,chat-model-loader:service_completed_successfully:false,cache:service_started:false,qdrant:service_started:false,com.docker.compose.image=sha256:450f8b6b1233084ad5f96e74b74970c8e380d245c73c84687869eff60b2c4379,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-topic-refresh.1dqzFV/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-topic-refresh.1dqzFV/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-topic-refresh.1dqzFV,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=apiservice-1,com.docker.compose.service=apiservice,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,net.dot.runtime.majorminor=10.0,net.dot.sdk.version=10.0.101,org.opencontainers.artifact.created=2026-09-23T14:56:58.1022320Z,org.opencontainers.image.authors=AspireAiStack.ApiService,org.opencontainers.image.base.digest=sha256:ed6a2d26633ddcd3d42a1d9f9866214ecbbc11ba6ac5e0e843da02c13da24072,org.opencontainers.image.base.name=mcr.microsoft.com/dotnet/aspnet:10.0,org.opencontainers.image.created=2026-09-23T14:56:58.1022320Z,org.opencontainers.image.version=1.0.0",
+    "ID": "b5a7134a483f",
+    "Image": "apiservice:aspire-deploy-20260923165141",
+    "Labels": "com.docker.compose.config-hash=0dfce548c46e3c00e118a3a189a8ad9f56875884ed800f6b10a8508b177db815,com.docker.compose.container-number=1,com.docker.compose.depends_on=ollama:service_started:false,chat-model-loader:service_completed_successfully:false,cache:service_started:false,qdrant:service_started:false,com.docker.compose.image=sha256:462048f7e10cc0474bf632f3cddc252dd7ce571cd3f340d15e534a8bafc38597,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-evidence.Si5X3e/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-evidence.Si5X3e/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-evidence.Si5X3e,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=apiservice-1,com.docker.compose.service=apiservice,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,net.dot.runtime.majorminor=10.0,net.dot.sdk.version=10.0.101,org.opencontainers.artifact.created=2026-09-23T16:51:44.7265950Z,org.opencontainers.image.authors=AspireAiStack.ApiService,org.opencontainers.image.base.digest=sha256:ed6a2d26633ddcd3d42a1d9f9866214ecbbc11ba6ac5e0e843da02c13da24072,org.opencontainers.image.base.name=mcr.microsoft.com/dotnet/aspnet:10.0,org.opencontainers.image.created=2026-09-23T16:51:44.7265950Z,org.opencontainers.image.version=1.0.0",
     "LocalVolumes": "0",
     "Mounts": "",
     "Names": "aspire-compose-b43b0c4d-apiservice-1",
@@ -36,18 +36,18 @@
       "os": "linux"
     },
     "Ports": "8080/tcp",
-    "RunningFor": "50 seconds ago",
+    "RunningFor": "3 seconds ago",
     "Size": "28.7kB (virtual 253MB)",
     "State": "running",
-    "Status": "Up 47 seconds"
+    "Status": "Up Less than a second"
   },
   {
     "Command": "\"dotnet /app/Aspire.…\"",
-    "CreatedAt": "2026-09-23 10:24:55 -0400 EDT",
+    "CreatedAt": "2026-09-23 11:09:26 -0400 EDT",
     "HealthStatus": "none",
-    "ID": "bbd6e83366ab",
+    "ID": "4d168c1440e7",
     "Image": "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:13.5",
-    "Labels": "com.docker.compose.config-hash=e6273d5ffe0ec8ef11a67968aa169e141f175d0c3196137cf3d98d45d2547256,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:b74dfb61e73afdf177942196db807c01612778b0636ed0fb89f08e498783deea,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-evidence.SAW0b8/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-evidence.SAW0b8/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-evidence.SAW0b8,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=compose-dashboard-1,com.docker.compose.service=compose-dashboard,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/18888/tcp=:",
+    "Labels": "com.docker.compose.config-hash=068ce4f689af6d50660947cef234edc4512b453283c8129ce227ad1657b54889,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:b74dfb61e73afdf177942196db807c01612778b0636ed0fb89f08e498783deea,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/tmp/aspire-compose-dashboard.nEvJow/docker-compose.yaml,com.docker.compose.project.environment_file=/tmp/aspire-compose-dashboard.nEvJow/.env.ComposeEvidence,com.docker.compose.project.working_dir=/tmp/aspire-compose-dashboard.nEvJow,com.docker.compose.project=aspire-compose-b43b0c4d,com.docker.compose.replace=compose-dashboard-1,com.docker.compose.service=compose-dashboard,com.docker.compose.version=5.4.0,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/18888/tcp=:18888",
     "LocalVolumes": "0",
     "Mounts": "",
     "Names": "aspire-compose-b43b0c4d-compose-dashboard-1",
@@ -56,11 +56,11 @@
       "architecture": "arm64",
       "os": "linux"
     },
-    "Ports": "0.0.0.0:65415->18888/tcp, [::]:65415->18888/tcp",
-    "RunningFor": "32 minutes ago",
+    "Ports": "0.0.0.0:18888->18888/tcp, [::]:18888->18888/tcp",
+    "RunningFor": "2 hours ago",
     "Size": "32.8kB (virtual 237MB)",
     "State": "running",
-    "Status": "Up 32 minutes"
+    "Status": "Up 2 hours"
   },
   {
     "Command": "\"/bin/ollama pull ph…\"",
@@ -78,10 +78,10 @@
       "os": "linux"
     },
     "Ports": "",
-    "RunningFor": "3 hours ago",
+    "RunningFor": "5 hours ago",
     "Size": "12.3kB (virtual 4.19GB)",
     "State": "exited",
-    "Status": "Exited (0) 47 seconds ago"
+    "Status": "Exited (0) Less than a second ago"
   },
   {
     "Command": "\"/bin/sh -c 'redis-s…\"",
@@ -100,10 +100,10 @@
       "variant": "v8"
     },
     "Ports": "6379/tcp",
-    "RunningFor": "3 hours ago",
+    "RunningFor": "5 hours ago",
     "Size": "12.3kB (virtual 171MB)",
     "State": "running",
-    "Status": "Up 3 hours"
+    "Status": "Up 5 hours"
   },
   {
     "Command": "\"./entrypoint.sh\"",
@@ -121,10 +121,10 @@
       "os": "linux"
     },
     "Ports": "6333-6334/tcp",
-    "RunningFor": "3 hours ago",
+    "RunningFor": "5 hours ago",
     "Size": "24.6kB (virtual 210MB)",
     "State": "running",
-    "Status": "Up 3 hours"
+    "Status": "Up 5 hours"
   },
   {
     "Command": "\"/bin/ollama serve\"",
@@ -142,9 +142,9 @@
       "os": "linux"
     },
     "Ports": "11434/tcp",
-    "RunningFor": "3 hours ago",
+    "RunningFor": "5 hours ago",
     "Size": "12.3kB (virtual 4.19GB)",
     "State": "running",
-    "Status": "Up 3 hours"
+    "Status": "Up 5 hours"
   }
 ]

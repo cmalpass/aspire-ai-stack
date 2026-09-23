@@ -4,10 +4,12 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 
-if ! command -v aspire >/dev/null 2>&1; then
-  echo "Aspire CLI 13.5.3 or later is required. Install it from https://learn.microsoft.com/dotnet/aspire/fundamentals/setup-tooling." >&2
-  exit 1
-fi
+for required_command in dotnet aspire; do
+  if ! command -v "${required_command}" >/dev/null 2>&1; then
+    echo "Required command '${required_command}' was not found on PATH." >&2
+    exit 1
+  fi
+done
 
 cd "${repo_root}"
 mkdir -p deploy/compose

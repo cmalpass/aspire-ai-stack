@@ -10,8 +10,4 @@
     <ProjectReference Include="..\AspireAiStack.ServiceDefaults\AspireAiStack.ServiceDefaults.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="13.5.3" />
-  </ItemGroup>
-
 </Project>

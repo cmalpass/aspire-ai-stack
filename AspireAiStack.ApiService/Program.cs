@@ -67,7 +67,7 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/", () => Results.Ok(new
 {
     service = "Aspire AI Stack API",
-    endpoints = new[] { "/api/status", "/api/chat" }
+    endpoints = new[] { "/api/status", "/api/knowledge/topics", "/api/chat" }
 }));
 
 app.MapGet("/api/status", (IKnowledgeStore knowledgeStore, IResponseCache responseCache) =>

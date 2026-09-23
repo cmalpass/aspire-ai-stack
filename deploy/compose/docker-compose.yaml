@@ -121,11 +121,6 @@ services:
       services__apiservice__http__0: "http://apiservice:${APISERVICE_PORT}"
       APISERVICE_HTTPS: "https://apiservice:${APISERVICE_PORT}"
       Demo__DashboardUrl: "http://localhost:18888"
-      ConnectionStrings__cache: "cache:6379,password=${CACHE_PASSWORD}"
-      CACHE_HOST: "cache"
-      CACHE_PORT: "6379"
-      CACHE_PASSWORD: "${CACHE_PASSWORD}"
-      CACHE_URI: "redis://:${CACHE_PASSWORD}@cache:6379"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://compose-dashboard:18889"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_SERVICE_NAME: "webfrontend"
@@ -134,8 +129,6 @@ services:
       - "${WEBFRONTEND_PORT}"
     depends_on:
       apiservice:
-        condition: "service_started"
-      cache:
         condition: "service_started"
     networks:
       - "aspire"

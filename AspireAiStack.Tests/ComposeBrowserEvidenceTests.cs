@@ -27,6 +27,12 @@ public sealed class ComposeBrowserEvidenceTests
             healthResponse.IsSuccessStatusCode,
             $"The Compose web container health endpoint returned {(int)healthResponse.StatusCode}.");
 
+        using var dashboardClient = new HttpClient();
+        using var dashboardResponse = await dashboardClient.GetAsync("http://localhost:18888");
+        Assert.True(
+            dashboardResponse.IsSuccessStatusCode,
+            $"The Compose dashboard returned {(int)dashboardResponse.StatusCode}.");
+
         using var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
