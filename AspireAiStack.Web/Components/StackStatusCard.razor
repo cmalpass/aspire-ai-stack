@@ -1,0 +1,17 @@
+<aside class="status-card" aria-label="Runtime status">
+    <span class="status-dot" aria-hidden="true"></span>
+    <div>
+        <p class="status-label">Runtime mode</p>
+        <strong>@Status.AiMode</strong>
+    </div>
+    <dl>
+        <div><dt>Vectors</dt><dd>@Status.VectorStore</dd></div>
+        <div><dt>Cache</dt><dd>@Status.Cache</dd></div>
+        <div><dt>Secrets required</dt><dd>@(Status.SafeDefault ? "No" : "Provider dependent")</dd></div>
+    </dl>
+</aside>
+
+@code {
+    [Parameter, EditorRequired]
+    public StackStatus Status { get; set; } = default!;
+}

@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.aspire/
+.vs/
+.vscode/
+TestResults/
+*.user
+*.suo
+*.nupkg
+.DS_Store

@@ -1,0 +1,120 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject AiStackApiClient ApiClient
+
+<PageTitle>Aspire AI Stack</PageTitle>
+
+<section class="hero">
+    <div>
+        <p class="eyebrow">A practical distributed AI development loop</p>
+        <h1>Orchestrate the whole AI stack without hiding its boundaries.</h1>
+        <p class="lede">
+            Aspire starts and connects the services. The API keeps credentials server-side,
+            retrieves grounding context, caches repeat requests, and emits telemetry for the dashboard.
+        </p>
+    </div>
+    @if (_status is not null)
+    {
+        <StackStatusCard Status="_status" />
+    }
+</section>
+
+<section class="topology" aria-label="Application topology">
+    <div class="topology-node primary">Blazor UI</div>
+    <span aria-hidden="true">→</span>
+    <div class="topology-node">ASP.NET Core API</div>
+    <span aria-hidden="true">→</span>
+    <div class="topology-node">Qdrant</div>
+    <div class="topology-node">Redis</div>
+    <div class="topology-node">Ollama</div>
+</section>
+
+<section class="demo-panel">
+    <div class="demo-copy">
+        <p class="eyebrow">Try the verified first-run flow</p>
+        <h2>Ask about the architecture</h2>
+        <p>The safe default is deterministic and credential-free. Repeat the question to see the cache hit.</p>
+    </div>
+
+    <form @onsubmit="AskAsync" @onsubmit:preventDefault>
+        <label for="prompt">Question</label>
+        <textarea id="prompt" @bind="_prompt" rows="4" placeholder="How does Aspire connect the API to Qdrant?"></textarea>
+        <button class="btn btn-primary" type="submit" disabled="@_isLoading">
+            @(_isLoading ? "Asking…" : "Ask the stack")
+        </button>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <p class="alert alert-danger" role="alert">@_error</p>
+    }
+
+    @if (_response is not null)
+    {
+        <article class="response-card" aria-live="polite">
+            <div class="response-heading">
+                <h3>Grounded response</h3>
+                <span class="badge @(_response.CacheHit ? "cache-hit" : "cache-miss")">
+                    @(_response.CacheHit ? "cache hit" : "fresh response")
+                </span>
+            </div>
+            <p>@_response.Answer</p>
+            <dl class="response-metadata">
+                <div><dt>AI mode</dt><dd>@_response.AiMode</dd></div>
+                <div><dt>Vector store</dt><dd>@_response.VectorStore</dd></div>
+                <div><dt>Cache</dt><dd>@_response.Cache</dd></div>
+            </dl>
+            <h4>Retrieved context</h4>
+            <ol class="source-list">
+                @foreach (var source in _response.Sources)
+                {
+                    <li><strong>@source.Title</strong><span>@source.Content</span></li>
+                }
+            </ol>
+        </article>
+    }
+</section>
+
+@code {
+    private string _prompt = "How does Aspire connect the API to Qdrant?";
+    private StackStatus? _status;
+    private ChatResponse? _response;
+    private string? _error;
+    private bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _status = await ApiClient.GetStatusAsync();
+        }
+        catch (HttpRequestException)
+        {
+            _error = "The API is not ready yet. Check the Aspire dashboard and retry.";
+        }
+    }
+
+    private async Task AskAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_prompt))
+        {
+            _error = "Enter a question before submitting.";
+            return;
+        }
+
+        _isLoading = true;
+        _error = null;
+        try
+        {
+            _response = await ApiClient.AskAsync(_prompt);
+        }
+        catch (HttpRequestException exception)
+        {
+            _error = $"The request failed: {exception.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}
