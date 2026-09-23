@@ -1,6 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddDockerComposeEnvironment("compose")
+var compose = builder.AddDockerComposeEnvironment("compose")
+    .WithDashboard(dashboard => dashboard.WithHostPort(18888));
+
+compose
     .ConfigureComposeFile(file =>
     {
         file.Name = "aspire-ai-stack";
@@ -82,6 +85,11 @@ var web = builder.AddProject<Projects.AspireAiStack_Web>("webfrontend", launchPr
     .WithHttpHealthCheck("/health")
     .WithReference(apiService)
     .WaitFor(apiService);
+
+if (builder.ExecutionContext.IsPublishMode)
+{
+    web.WithEnvironment("Demo__DashboardUrl", "http://localhost:18888");
+}
 
 if (cache is not null)
 {

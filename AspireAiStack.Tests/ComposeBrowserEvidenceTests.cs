@@ -55,6 +55,8 @@ public sealed class ComposeBrowserEvidenceTests
             {
                 Timeout = 120_000
             });
+            var dashboardLink = page.GetByRole(AriaRole.Link, new() { Name = "Open the Aspire dashboard ↗" });
+            Assert.Equal("http://localhost:18888", await dashboardLink.GetAttributeAsync("href"));
 
             var prompt = $"How does one Compose file make an AI application easier to inspect? Evidence run {runId}.";
             await page.GetByLabel("Question").FillAsync(prompt);
@@ -97,6 +99,11 @@ public sealed class ComposeBrowserEvidenceTests
                 {
                     statusCode = (int)healthResponse.StatusCode,
                     status = healthResponse.StatusCode.ToString()
+                },
+                dashboard = new
+                {
+                    url = "http://localhost:18888",
+                    homepageLinkVerified = true
                 },
                 prompt,
                 fresh = new

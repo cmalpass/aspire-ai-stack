@@ -3,7 +3,7 @@ services:
   compose-dashboard:
     image: "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:13.5"
     ports:
-      - "18888"
+      - "18888:18888"
     expose:
       - "18889"
       - "18890"
@@ -120,6 +120,7 @@ services:
       APISERVICE_HTTP: "http://apiservice:${APISERVICE_PORT}"
       services__apiservice__http__0: "http://apiservice:${APISERVICE_PORT}"
       APISERVICE_HTTPS: "https://apiservice:${APISERVICE_PORT}"
+      Demo__DashboardUrl: "http://localhost:18888"
       ConnectionStrings__cache: "cache:6379,password=${CACHE_PASSWORD}"
       CACHE_HOST: "cache"
       CACHE_PORT: "6379"

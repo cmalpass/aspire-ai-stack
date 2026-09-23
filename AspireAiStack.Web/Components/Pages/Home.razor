@@ -1,6 +1,7 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @inject AiStackApiClient ApiClient
+@inject IConfiguration Configuration
 
 <PageTitle>Aspire AI Stack</PageTitle>
 
@@ -16,6 +17,14 @@
     @if (_status is not null)
     {
         <StackStatusCard Status="_status" />
+    }
+    @if (!string.IsNullOrWhiteSpace(_dashboardUrl))
+    {
+        <aside class="dashboard-card" aria-label="Aspire dashboard">
+            <p class="status-label">Evidence review</p>
+            <a href="@_dashboardUrl" target="_blank" rel="noopener noreferrer">Open the Aspire dashboard ↗</a>
+            <p>Inspect service health, logs, traces, and metrics from the same Compose run.</p>
+        </aside>
     }
 </section>
 
@@ -109,6 +118,7 @@
 
 @code {
     private string _prompt = "How does Aspire connect the API to Qdrant?";
+    private string? _dashboardUrl;
     private StackStatus? _status;
     private IReadOnlyList<KnowledgeTopic> _topics = [];
     private ChatResponse? _response;
@@ -117,6 +127,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _dashboardUrl = Configuration["Demo:DashboardUrl"];
+
         try
         {
             _status = await ApiClient.GetStatusAsync();

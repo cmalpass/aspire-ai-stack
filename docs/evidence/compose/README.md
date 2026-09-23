@@ -10,6 +10,7 @@ The evidence follows one browser request through the complete stack:
 2. The first prompt reaches the API. Qdrant returns three grounded records, Ollama generates the answer, and Redis stores the response.
 3. The same prompt is submitted again. The API returns the same answer with `cacheHit: true`, proving the repeat path is served from Redis.
 4. The web container's `/health` endpoint returns HTTP 200, proving the public entry point is ready after the Compose project starts.
+5. The homepage exposes a verified link to the same Compose run's Aspire dashboard at `http://localhost:18888`.
 
 The point is to make each claim inspectable rather than relying on a single screenshot:
 
@@ -19,6 +20,7 @@ The point is to make each claim inspectable rather than relying on a single scre
 | [`compose-containers.json`](compose-containers.json) | The running Compose project and its service/image identities, including the completed model loader |
 | [`compose-ui-fresh.png`](compose-ui-fresh.png) | Live Ollama response, Qdrant sources, Redis status, and `FRESH RESPONSE` |
 | [`compose-ui-cache-hit.png`](compose-ui-cache-hit.png) | The repeated request and visible `CACHE HIT` state |
+| [`compose-run.json`](compose-run.json) | The homepage dashboard link target and its verification |
 | [`compose-trace.zip`](compose-trace.zip) | Playwright DOM snapshots, screenshots, and browser activity |
 
 ## How it maps to the article
@@ -33,4 +35,4 @@ The Compose file therefore is not a second hand-maintained architecture. It is t
 ./scripts/capture-compose-evidence.sh
 ```
 
-The script deliberately leaves the Compose project running so the web endpoint and dashboard can be opened from the deployment output. The generated environment file contains local secrets and remains outside source control.
+The script deliberately leaves the Compose project running so the web endpoint and the fixed dashboard URL (`http://localhost:18888`) can be opened for inspection. The generated environment file contains local secrets and remains outside source control.
