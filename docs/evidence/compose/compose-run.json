@@ -1,0 +1,22 @@
+{
+  "capturedAtUtc": "2026-09-23T14:30:09.459173+00:00",
+  "endpoint": "http://localhost:49285",
+  "health": {
+    "statusCode": 200,
+    "status": "OK"
+  },
+  "prompt": "How does one Compose file make an AI application easier to inspect? Evidence run 20260923-142924.",
+  "fresh": {
+    "answer": "Compose file provides a structured representation of an AI application\u0027s components, facilitin[1]. It enables developers and inspectors to easily understand the application\u0027s architecture, dependencies, and startup behavior [2]. Additionally, withReference and WaitFor features enhance inspection by providing visibility into service connectivity and startup conditions [3]. Reference: [1] \u0022AppHost Orchestration with Aspire AppHost\u0022, Aspire Documentation, Accessed on 20260923-142924. [2] \u0022Compose file for Kubernetes Applications\u0022, Kubernetes Documentation, Accessed on 20260923-142924. [3] \u0022Service References and Dependencies in Application Composition\u0022, Application Composition Guide, Accessed on 20260923-142924.",
+    "sourceCount": 3,
+    "cacheHit": false,
+    "screenshot": "compose-ui-fresh.png"
+  },
+  "cached": {
+    "answer": "Compose file provides a structured representation of an AI application\u0027s components, facilitin[1]. It enables developers and inspectors to easily understand the application\u0027s architecture, dependencies, and startup behavior [2]. Additionally, withReference and WaitFor features enhance inspection by providing visibility into service connectivity and startup conditions [3]. Reference: [1] \u0022AppHost Orchestration with Aspire AppHost\u0022, Aspire Documentation, Accessed on 20260923-142924. [2] \u0022Compose file for Kubernetes Applications\u0022, Kubernetes Documentation, Accessed on 20260923-142924. [3] \u0022Service References and Dependencies in Application Composition\u0022, Application Composition Guide, Accessed on 20260923-142924.",
+    "sourceCount": 3,
+    "cacheHit": true,
+    "screenshot": "compose-ui-cache-hit.png"
+  },
+  "trace": "compose-trace.zip"
+}

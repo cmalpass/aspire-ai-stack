@@ -48,6 +48,22 @@ dotnet run --project AspireAiStack.AppHost -- --Demo:UseLocalModel=true
 
 Aspire adds a `phi3:mini` model resource and waits for it before starting the API. The first run downloads the model and therefore takes longer. The API talks to Ollama through `IChatClient` from `Microsoft.Extensions.AI`; the browser never receives the model endpoint.
 
+## Run the whole stack from one Compose file
+
+The AppHost is the source of truth, and Aspire can render that resource graph as one Docker Compose application. Generate the checked-in deployment view with:
+
+```bash
+./scripts/generate-compose.sh
+```
+
+For a complete live run that builds the API and web images, starts Redis, Qdrant, Ollama, the model loader, and the Aspire dashboard, then captures evidence through the browser:
+
+```bash
+./scripts/capture-compose-evidence.sh
+```
+
+The script leaves the Compose project running for inspection. It writes the health result, fresh response, cache-hit response, container inventory, screenshots, and Playwright trace to `docs/evidence/compose/`. See [`deploy/compose/README.md`](deploy/compose/README.md) for how AppHost declarations become Compose services and why the model loader is a separate one-shot service.
+
 ## Run without containers
 
 The credential-free mode is useful for tests and environments without an OCI runtime:

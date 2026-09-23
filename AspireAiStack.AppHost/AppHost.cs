@@ -1,9 +1,22 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.AddDockerComposeEnvironment("compose")
+    .ConfigureComposeFile(file =>
+    {
+        file.Name = "aspire-ai-stack";
+
+        // The checked-in Compose walkthrough is a local demo deployment. Keep
+        // the same health endpoints available there as they are in Aspire's
+        // Development dashboard so the evidence is easy to inspect.
+        file.Services["apiservice"].Environment["DOTNET_ENVIRONMENT"] = "Development";
+        file.Services["webfrontend"].Environment["DOTNET_ENVIRONMENT"] = "Development";
+    });
+
 var useContainers = !bool.TryParse(builder.Configuration["Demo:UseContainers"], out var configuredUseContainers)
     || configuredUseContainers;
 var useLocalModel = bool.TryParse(builder.Configuration["Demo:UseLocalModel"], out var configuredUseLocalModel)
-    && configuredUseLocalModel;
+    ? configuredUseLocalModel
+    : builder.ExecutionContext.IsPublishMode;
 
 IResourceBuilder<ProjectResource> apiService;
 IResourceBuilder<RedisResource>? cache = null;
@@ -14,11 +27,11 @@ if (useContainers)
         .WithLifetime(ContainerLifetime.Persistent);
 
     var qdrant = builder.AddQdrant("qdrant")
-        .WithDataVolume()
+        .WithDataVolume("aspire-ai-stack-qdrant-data")
         .WithLifetime(ContainerLifetime.Persistent);
 
     var ollama = builder.AddOllama("ollama")
-        .WithDataVolume()
+        .WithDataVolume("aspire-ai-stack-ollama-data")
         .WithLifetime(ContainerLifetime.Persistent);
 
     apiService = builder.AddProject<Projects.AspireAiStack_ApiService>("apiservice", launchProfileName: "http")
@@ -36,10 +49,23 @@ if (useContainers)
 
     if (useLocalModel)
     {
-        var chatModel = ollama.AddModel("chat-model", "phi3:mini");
-        apiService
-            .WithReference(chatModel)
-            .WaitFor(chatModel);
+        if (builder.ExecutionContext.IsPublishMode)
+        {
+            var modelLoader = builder.AddContainer("chat-model-loader", "ollama/ollama", "0.32.15")
+                .WithArgs("pull", "phi3:mini")
+                .WithEnvironment("OLLAMA_HOST", ollama.GetEndpoint("http"))
+                .WithVolume("aspire-ai-stack-ollama-data", "/root/.ollama")
+                .WaitFor(ollama);
+
+            apiService.WaitForCompletion(modelLoader);
+        }
+        else
+        {
+            var chatModel = ollama.AddModel("chat-model", "phi3:mini");
+            apiService
+                .WithReference(chatModel)
+                .WaitFor(chatModel);
+        }
     }
 }
 else
