@@ -72,7 +72,10 @@ public sealed class ComposeBrowserEvidenceTests
                 Timeout = 180_000
             });
 
-            var freshAnswer = await page.Locator(".response-card > p").InnerTextAsync();
+            var freshAnswer = await page.Locator(".response-card > p").InnerTextAsync(new LocatorInnerTextOptions
+            {
+                Timeout = 180_000
+            });
             var sourceCount = await page.Locator(".source-list li").CountAsync();
             Assert.True(freshAnswer.Length > 40, "Expected a substantive answer from the live model.");
             Assert.Equal(3, sourceCount);
@@ -110,6 +113,14 @@ public sealed class ComposeBrowserEvidenceTests
                 {
                     url = "http://localhost:18888",
                     homepageLinkVerified = true
+                },
+                telemetry = new
+                {
+                    sensitiveContentCaptureEnabled = string.Equals(
+                        Environment.GetEnvironmentVariable("CAPTURE_TELEMETRY_CONTENT"),
+                        "true",
+                        StringComparison.OrdinalIgnoreCase),
+                    contentEvidenceUsesSyntheticPrompt = true
                 },
                 prompt,
                 fresh = new

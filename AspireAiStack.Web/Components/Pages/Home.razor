@@ -23,7 +23,7 @@
         <aside class="dashboard-card" aria-label="Aspire dashboard">
             <p class="status-label">Evidence review</p>
             <a href="@_dashboardUrl" target="_blank" rel="noopener noreferrer">Open the Aspire dashboard ↗</a>
-            <p>Inspect service health, logs, traces, and metrics from the same Compose run.</p>
+            <p>Inspect logs, traces, and metrics from the same Compose run.</p>
         </aside>
     }
 </section>
@@ -52,9 +52,11 @@
                 <li>Append a short unique suffix to the question, submit it, and look for a <strong>fresh response</strong> with three retrieved context items.</li>
                 <li>Submit the same question again and look for <strong>cache hit</strong> with the identical answer.</li>
                 <li>Choose a seeded topic below to replace the prompt with a question the catalog is prepared to answer.</li>
+                <li>With Ollama enabled, open the dashboard, filter traces to <strong>Gen AI</strong>, and inspect the workflow → agent → chat → tool → retrieval spans for the fresh request.</li>
             </ol>
             <p>A question asked earlier can return a cache hit immediately. The unique suffix guarantees a new cache key for the walkthrough.</p>
             <p>The first Qdrant-backed request can take a little longer while the seven demo notes are seeded.</p>
+            <p>The demo uses simple hash vectors, so retrieved notes may be unrelated to your question. Compare the answer with the displayed context; this walkthrough checks the service connections and caching, not answer accuracy.</p>
         </div>
         @if (_topics.Count > 0)
         {

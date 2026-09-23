@@ -76,7 +76,8 @@ services:
       Infrastructure__UseRedis: "true"
       Infrastructure__UseQdrant: "true"
       AI__Mode: "ollama"
-      AI__Model: "phi3:mini"
+      AI__Model: "qwen2.5:3b"
+      AI__CaptureTelemetryContent: "false"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://compose-dashboard:18889"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_SERVICE_NAME: "apiservice"
@@ -98,7 +99,7 @@ services:
     image: "ollama/ollama:0.32.15"
     command:
       - "pull"
-      - "phi3:mini"
+      - "qwen2.5:3b"
     environment:
       OLLAMA_HOST: "http://ollama:11434"
     volumes:

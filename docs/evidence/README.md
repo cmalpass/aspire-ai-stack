@@ -1,17 +1,21 @@
 # Live model evidence
 
-This directory contains the output of a real end-to-end run captured on 2026-09-23. The Aspire AppHost started the API and Blazor UI, reused its persistent Redis, Qdrant, and Ollama resources, and waited for the `phi3:mini` model before the test sent traffic.
+The default evidence runs keep GenAI message content disabled. For the complementary, synthetic content walkthrough, see [`compose-content/README.md`](compose-content/README.md).
+
+This directory contains the output of a real end-to-end run captured on 2026-09-23. The Aspire AppHost started the API and Blazor UI, reused its persistent Redis, Qdrant, and Ollama resources, and waited for the tool-capable `qwen2.5:3b` model before the test sent traffic.
 
 ## Verified path
 
 The test exercises two independent entry points:
 
-1. A direct HTTP request reaches `/api/chat`, retrieves three records from Qdrant, generates an answer with Phi-3 through Ollama, and stores the result in Redis.
+1. A direct HTTP request reaches `/api/chat`, invokes the `search_knowledge` tool to retrieve three records from Qdrant, generates an answer with Qwen 2.5 3B through Ollama, and stores the result in Redis.
 2. Repeating the same HTTP request returns the identical answer with `cacheHit: true`.
 3. Chromium loads the Blazor UI, submits a different prompt, and records the fresh model response with three retrieved sources.
 4. Chromium repeats the prompt and records the identical response with the visible `CACHE HIT` state.
 
 The machine-readable assertions and complete payloads are in [`live-model-run.json`](live-model-run.json). The raw request/response pair is in [`http-transcript.txt`](http-transcript.txt).
+
+With the Compose evidence stack running, open `http://localhost:18888/traces`, select the fresh browser request, and inspect its trace detail. The verified trace contains `invoke_workflow grounded-rag-answer`, `invoke_agent grounded-answer-agent`, `chat qwen2.5:3b`, `execute_tool search_knowledge`, and `retrieval knowledge-store`. The chat's GenAI detail also reports input/output token counts and one registered tool; message content remains absent because sensitive content capture is disabled by default. Workflow and agent spans also carry the prompt/corpus versions, request ID, cache outcome, and source count.
 
 ## Browser evidence
 
@@ -24,7 +28,7 @@ The machine-readable assertions and complete payloads are in [`live-model-run.js
 | Resource | Version | Immutable identity |
 | --- | --- | --- |
 | Ollama | `0.32.15` | `sha256:57d60e686821ea81a7748a3ec8141308c8b8f95b27105713954abf7a6529e700` |
-| Phi-3 Mini | `phi3:mini` | Ollama model `4f2222927938`; model blob `sha256:633fc5be925f9a484b61d6f9b9a78021eeb462100bd557309f01ba84cac26adf` |
+| Qwen 2.5 3B | `qwen2.5:3b` | refreshed by the evidence capture run |
 | Qdrant | `v1.18.0` | `sha256:b3063c673f3973877c038eeecc392bad5011f072ee7892b56c9a8e204a3bdea9` |
 | Redis | `8.6` (server `8.6.7`) | `sha256:6d0978c640bd9b2ee095a08603dfbf855452f168584a0d7ef1e84f43a0859576` |
 

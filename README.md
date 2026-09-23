@@ -9,7 +9,7 @@ The sample keeps the application boundaries visible:
 - Blazor provides a small interactive client without receiving infrastructure credentials.
 - Qdrant stores deterministic demo vectors.
 - Redis caches repeated responses.
-- Ollama is available as the optional local model host.
+- Ollama is available as the optional local model host, using a tool-capable `qwen2.5:3b` model for the agent path.
 
 The default uses real Redis and Qdrant containers but a deterministic answer generator. This makes the first run useful without downloading a model or configuring a cloud credential.
 
@@ -29,7 +29,7 @@ The evidence-capture scripts also check for PowerShell (`pwsh`), ripgrep (`rg`),
 | --- | --- | --- |
 | Normal development | `dotnet run --project AspireAiStack.AppHost` | Real Redis and Qdrant, deterministic generation |
 | Fastest credential-free check | `dotnet run --project AspireAiStack.AppHost -- --Demo:UseContainers=false` | In-memory retrieval and cache, deterministic generation |
-| Real local generation | `dotnet run --project AspireAiStack.AppHost -- --Demo:UseLocalModel=true` | Redis, Qdrant, Ollama, and `phi3:mini` |
+| Real local generation | `dotnet run --project AspireAiStack.AppHost -- --Demo:UseLocalModel=true` | Redis, Qdrant, Ollama, and `qwen2.5:3b` |
 | Full Compose proof | `./scripts/capture-compose-evidence.sh` | Generated seven-service Compose project plus browser evidence |
 
 ## Run the stack
@@ -65,7 +65,31 @@ Set `Demo:UseLocalModel` when starting the AppHost:
 dotnet run --project AspireAiStack.AppHost -- --Demo:UseLocalModel=true
 ```
 
-Aspire adds a `phi3:mini` model resource and waits for it before starting the API. The first run downloads the model and therefore takes longer. The API talks to Ollama through `IChatClient` from `Microsoft.Extensions.AI`; the browser never receives the model endpoint.
+Aspire adds a `qwen2.5:3b` model resource and waits for it before starting the API. The first run downloads the model and therefore takes longer. Qwen 2.5 is used because this path intentionally exercises structured tool calling: the model calls `search_knowledge`, MEAI invokes it, and the model then writes the grounded answer. The API talks to Ollama through `IChatClient` from `Microsoft.Extensions.AI`; the browser never receives the model endpoint.
+
+The live request produces an inspectable GenAI trace hierarchy in the Aspire dashboard:
+
+```text
+invoke_workflow grounded-rag-answer
+└── invoke_agent grounded-answer-agent
+    └── chat qwen2.5:3b (wraps the model/tool loop)
+        └── execute_tool search_knowledge
+            └── retrieval knowledge-store
+```
+
+Open the dashboard, choose **Traces**, filter **Type = Gen AI**, and open the sparkle/details view. The trace shows model metadata and token/latency data while prompt, tool arguments, and tool results remain omitted unless sensitive-content capture is explicitly enabled.
+
+The trace also carries the prompt version (`grounded-answer-v2`), seeded-corpus version (`seeded-knowledge-v1`), request trace ID, agent description, cache outcome, and source count. The API emits app-owned metrics for request outcomes, cache hits, retrieval source counts, and answer length through the `AspireAiStack.ApiService` meter; the standard GenAI metrics appear under the `AspireAiStack.AI` meter.
+
+For a local-only content walkthrough, explicitly opt in when starting the AppHost:
+
+```bash
+dotnet run --project AspireAiStack.AppHost -- \
+  --Demo:UseLocalModel=true \
+  --Demo:CaptureTelemetryContent=true
+```
+
+The homepage status card reports whether content capture is active. Keep this disabled for shared or production environments because captured prompts, tool arguments, tool results, and responses may contain sensitive data.
 
 ## Run the whole stack from one Compose file
 
@@ -82,6 +106,10 @@ For a complete live run that builds the API and web images, starts Redis, Qdrant
 ```
 
 The script leaves the Compose project running for inspection. It prints the web URL, the fixed dashboard URL (`http://localhost:18888`), the generated deployment directory, and an exact cleanup command. It writes the health result, fresh response, cache-hit response, container inventory, screenshots, and Playwright trace to `docs/evidence/compose/`. See [`deploy/compose/README.md`](deploy/compose/README.md) for how AppHost declarations become Compose services and why the model loader is a separate one-shot service.
+
+To generate a Compose file with local-only GenAI content capture enabled, pass `--Demo:CaptureTelemetryContent=true` to the Aspire publish/deploy command. The checked-in Compose artifact defaults to metadata-only capture.
+
+The reviewed content-enabled evidence run is documented in [`docs/evidence/compose-content/README.md`](docs/evidence/compose-content/README.md). It uses a synthetic prompt and shows the user message, tool call, tool response, and assistant output in Aspire's GenAI details panel.
 
 ## Run without containers
 
@@ -111,7 +139,7 @@ CI uploads the browser screenshot, trace, and TRX results as a `browser-smoke-ev
 
 ### Capture real-model evidence
 
-The live evidence test is intentionally opt-in because it starts Redis, Qdrant, and Ollama containers and downloads `phi3:mini` on the first run. It exercises a fresh model response and a Redis cache hit through both HTTP and the Blazor UI:
+The live evidence test is intentionally opt-in because it starts Redis, Qdrant, and Ollama containers and downloads `qwen2.5:3b` on the first run. It exercises a fresh model response, the tool-calling path, and a Redis cache hit through both HTTP and the Blazor UI:
 
 ```bash
 ./scripts/capture-live-model-evidence.sh
@@ -125,13 +153,17 @@ The browser calls only the API. Inside the API, `AiAssistantService` depends on 
 
 ## Troubleshooting
 
-- **The first local-model start is slow:** Ollama must download `phi3:mini`; the evidence tests allow up to 20 minutes for a cold run.
+- **The first local-model start is slow:** Ollama must download `qwen2.5:3b`; the evidence tests allow up to 20 minutes for a cold run.
 - **Port 18888 is already in use:** stop the conflicting process or Compose project before running the Compose evidence path.
 - **The first Qdrant answer is slower:** the API creates or refreshes the seven seeded records on the first search.
 - **The UI says the API is not ready:** use the homepage retry button or inspect `apiservice` in the Aspire dashboard.
 - **A script reports a missing command:** install the named prerequisite and rerun it; the scripts fail before changing the deployment when a required tool is absent.
 
 ## Production boundary
+
+The deterministic hash embeddings can return sources that are not relevant to the question. The evidence checks execution, source count, and cache behavior; it does not grade factual correctness or citation quality. The Ollama path is non-streaming, so it exercises token usage and operation duration, not time-to-first-chunk or per-chunk metrics.
+
+Cache keys currently contain only the normalized prompt. Redis entries expire after ten minutes; in-memory entries last until the process exits. When switching models or generation modes against the same Redis instance, use a new question or wait for expiry to avoid reusing an earlier answer. Production caching also needs model, corpus, and authorization scope in its identity.
 
 The AppHost is an application model, not a production architecture decision. Before deployment, decide how identity, persistence, backups, private networking, scaling, model hosting, content safety, and observability retention should work. A typical Azure deployment replaces local containers with managed services and runs `aspire deploy` only after reviewing the generated plan.
 

@@ -1,6 +1,6 @@
 {
-  "capturedAtUtc": "2026-09-23T21:48:15.572461+00:00",
-  "endpoint": "http://localhost:49919",
+  "capturedAtUtc": "2026-09-23T22:02:37.144307+00:00",
+  "endpoint": "http://localhost:50664",
   "health": {
     "statusCode": 200,
     "status": "OK"
@@ -9,7 +9,11 @@
     "url": "http://localhost:18888",
     "homepageLinkVerified": true
   },
-  "prompt": "How does one Compose file make an AI application easier to inspect? Evidence run 20260923-214746.",
+  "telemetry": {
+    "sensitiveContentCaptureEnabled": true,
+    "contentEvidenceUsesSyntheticPrompt": true
+  },
+  "prompt": "How does one Compose file make an AI application easier to inspect? Evidence run 20260923-220155.",
   "fresh": {
     "answer": "[1] AppHost orchestration: The Aspire AppHost declares services, containers, dependencies, startup order, and endpoints in one application model. [2] Production boundaries: The AppHost application model is reusable, but production deployments still require deliberate choices for identity, persistence, scaling, backups, and managed services. [3] Vector search: Qdrant stores embedding vectors and payloads. Similarity search retrieves relevant grounding passages before the model generates an answer.",
     "sourceCount": 3,

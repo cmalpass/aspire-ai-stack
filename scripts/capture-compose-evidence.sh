@@ -5,7 +5,8 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 deployment_dir="$(mktemp -d /tmp/aspire-compose-evidence.XXXXXX)"
 log_path="${repo_root}/TestResults/compose-evidence/deploy.log"
-evidence_dir="${repo_root}/docs/evidence/compose"
+evidence_dir="${EVIDENCE_OUTPUT_DIR:-${repo_root}/docs/evidence/compose}"
+capture_content="${CAPTURE_TELEMETRY_CONTENT:-false}"
 
 for required_command in dotnet aspire docker pwsh rg jq; do
   if ! command -v "${required_command}" >/dev/null 2>&1; then
@@ -25,7 +26,8 @@ aspire deploy \
   --output-path "${deployment_dir}" \
   -- \
   --Demo:UseContainers=true \
-  --Demo:UseLocalModel=true 2>&1 | tee "${log_path}"
+  --Demo:UseLocalModel=true \
+  --Demo:CaptureTelemetryContent="${capture_content}" 2>&1 | tee "${log_path}"
 
 web_url="$(rg -o 'Successfully deployed webfrontend to http://localhost:[0-9]+' "${log_path}" | tail -n 1 | sed 's/.* to //')"
 if [[ -z "${web_url}" ]]; then
@@ -56,6 +58,7 @@ docker ps -a \
 
 COMPOSE_BASE_URL="${web_url}" \
 EVIDENCE_OUTPUT_DIR="${evidence_dir}" \
+CAPTURE_TELEMETRY_CONTENT="${capture_content}" \
 dotnet test AspireAiStack.Tests/AspireAiStack.Tests.csproj \
   --configuration Release \
   --no-build \
@@ -65,6 +68,7 @@ dotnet test AspireAiStack.Tests/AspireAiStack.Tests.csproj \
   --results-directory "${repo_root}/TestResults/compose-evidence"
 
 echo "Compose evidence captured under ${evidence_dir}"
+echo "Sensitive GenAI content capture: ${capture_content}"
 echo "The Compose project ${compose_project} is still running at ${web_url} for inspection."
 echo "Aspire dashboard: http://localhost:18888"
 echo "Deployment files: ${deployment_dir}"

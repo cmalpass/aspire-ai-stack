@@ -1,6 +1,6 @@
 # Docker Compose evidence
 
-This directory contains a real end-to-end run of the generated Docker Compose application. The run used .NET 10.0.1, Aspire 13.5.3, Docker Compose, Redis 8.6.7, Qdrant v1.18.0, Ollama 0.32.15, and the `phi3:mini` model.
+This directory contains a real end-to-end run of the generated Docker Compose application. The run used .NET 10.0.1, Aspire 13.5.3, Docker Compose, Redis 8.6.7, Qdrant v1.18.0, Ollama 0.32.15, and the tool-capable `qwen2.5:3b` model.
 
 ## What this proves
 
@@ -22,11 +22,15 @@ The point is to make each claim inspectable rather than relying on a single scre
 | [`compose-ui-cache-hit.png`](compose-ui-cache-hit.png) | The repeated request and visible `CACHE HIT` state |
 | [`compose-trace.zip`](compose-trace.zip) | Playwright DOM snapshots, screenshots, and browser activity |
 
+The running dashboard provides the telemetry walkthrough. Open `http://localhost:18888/traces`, select the fresh browser request, and inspect its trace detail: the verified trace shows `invoke_workflow grounded-rag-answer`, `invoke_agent grounded-answer-agent`, `chat qwen2.5:3b`, `execute_tool search_knowledge`, and `retrieval knowledge-store`. Opening the GenAI details for the chat shows token counts and one registered tool, while message content remains absent by default. The workflow and agent spans expose prompt/corpus versions, request ID, cache outcome, and source count. To inspect aggregate usage, open `http://localhost:18888/metrics`, select `apiservice`, then choose the `AspireAiStack.AI` meter and `gen_ai.client.token.usage` instrument. The API also emits app-owned outcome metrics through `AspireAiStack.ApiService`; the exact metric list can vary with the Aspire dashboard preview build.
+
+For the visual privacy comparison and the opt-in conversation view, see the separate [`compose-content` evidence bundle](../compose-content/README.md). It includes screenshots of the metadata-only GenAI panel, the content-enabled GenAI panel, and the token-usage metrics table; it uses synthetic prompts and must remain a development-only exercise.
+
 ## How it maps to the article
 
 The article's `AddRedis`, `AddQdrant`, `AddOllama`, project references, and `WaitFor` declarations describe the application graph once. `Aspire.Hosting.Docker` adds a Compose deployment target; `aspire publish` renders the graph to `docker-compose.yaml`, and `aspire deploy` builds the application images, fills the generated environment values, and runs that file.
 
-The Compose file therefore is not a second hand-maintained architecture. It is the deployment-shaped view of the same AppHost model. The explicit `chat-model-loader` service is the one extra detail worth calling out: it pulls `phi3:mini` into the shared Ollama volume and must finish successfully before the API starts.
+The Compose file therefore is not a second hand-maintained architecture. It is the deployment-shaped view of the same AppHost model. The explicit `chat-model-loader` service is the one extra detail worth calling out: it pulls `qwen2.5:3b` into the shared Ollama volume and must finish successfully before the API starts.
 
 ## Reproduce
 

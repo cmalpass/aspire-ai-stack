@@ -67,7 +67,7 @@ public sealed class LiveModelEndToEndTests
             runId,
             runtime = RuntimeInformation.FrameworkDescription,
             operatingSystem = RuntimeInformation.OSDescription,
-            model = "phi3:mini",
+            model = "qwen2.5:3b",
             resources = new
             {
                 apiMode = status.AiMode,
@@ -156,7 +156,10 @@ public sealed class LiveModelEndToEndTests
             {
                 Timeout = 180_000
             });
-            var freshAnswer = await page.Locator(".response-card > p").InnerTextAsync();
+            var freshAnswer = await page.Locator(".response-card > p").InnerTextAsync(new LocatorInnerTextOptions
+            {
+                Timeout = 180_000
+            });
             Assert.True(freshAnswer.Length > 40, "Expected a substantive answer from the live model.");
             Assert.Equal(3, await page.Locator(".source-list li").CountAsync());
 

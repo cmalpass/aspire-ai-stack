@@ -1,4 +1,5 @@
 var builder = DistributedApplication.CreateBuilder(args);
+const string localModel = "qwen2.5:3b";
 
 var compose = builder.AddDockerComposeEnvironment("compose")
     .WithDashboard(dashboard => dashboard.WithHostPort(18888));
@@ -20,6 +21,8 @@ var useContainers = !bool.TryParse(builder.Configuration["Demo:UseContainers"], 
 var useLocalModel = bool.TryParse(builder.Configuration["Demo:UseLocalModel"], out var configuredUseLocalModel)
     ? configuredUseLocalModel
     : builder.ExecutionContext.IsPublishMode;
+var captureTelemetryContent = bool.TryParse(builder.Configuration["Demo:CaptureTelemetryContent"], out var configuredCaptureTelemetryContent)
+    && configuredCaptureTelemetryContent;
 
 IResourceBuilder<ProjectResource> apiService;
 
@@ -44,7 +47,8 @@ if (useContainers)
         .WithEnvironment("Infrastructure__UseRedis", "true")
         .WithEnvironment("Infrastructure__UseQdrant", "true")
         .WithEnvironment("AI__Mode", useLocalModel ? "ollama" : "simulated")
-        .WithEnvironment("AI__Model", "phi3:mini")
+        .WithEnvironment("AI__Model", localModel)
+        .WithEnvironment("AI__CaptureTelemetryContent", captureTelemetryContent ? "true" : "false")
         .WaitFor(cache)
         .WaitFor(qdrant)
         .WaitFor(ollama);
@@ -54,7 +58,7 @@ if (useContainers)
         if (builder.ExecutionContext.IsPublishMode)
         {
             var modelLoader = builder.AddContainer("chat-model-loader", "ollama/ollama", "0.32.15")
-                .WithArgs("pull", "phi3:mini")
+                .WithArgs("pull", localModel)
                 .WithEnvironment("OLLAMA_HOST", ollama.GetEndpoint("http"))
                 .WithVolume("aspire-ai-stack-ollama-data", "/root/.ollama")
                 .WaitFor(ollama);
@@ -63,7 +67,7 @@ if (useContainers)
         }
         else
         {
-            var chatModel = ollama.AddModel("chat-model", "phi3:mini");
+            var chatModel = ollama.AddModel("chat-model", localModel);
             apiService
                 .WithReference(chatModel)
                 .WaitFor(chatModel);

@@ -36,6 +36,13 @@ public sealed record ChatResponse(
     bool CacheHit,
     IReadOnlyList<SourceCitation> Sources);
 
-public sealed record StackStatus(string AiMode, string VectorStore, string Cache, bool SafeDefault);
+public sealed record StackStatus(
+    string AiMode,
+    string VectorStore,
+    string Cache,
+    bool SafeDefault,
+    string PromptVersion = "grounded-answer-v2",
+    string KnowledgeCorpusVersion = "seeded-knowledge-v1",
+    bool SensitiveTelemetryEnabled = false);
 
 public sealed record KnowledgeTopic(string Title, string SuggestedQuestion);
