@@ -103,8 +103,20 @@ h1, h2, h3, h4 {
     margin: 1.25rem 0 0;
 }
 
-.status-card dl div, .response-metadata div {
+.status-card dl div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, 1.5fr);
+}
+
+.status-card dd {
+    overflow-wrap: anywhere;
+    text-align: right;
+}
+
+.response-metadata div {
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
 }
 

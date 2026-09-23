@@ -49,6 +49,19 @@ public sealed class BrowserSmokeTests
             }).WaitForAsync();
             await page.GetByText("simulated", new() { Exact = true }).WaitForAsync();
 
+            var vectorLabel = page.Locator(".status-card dt").Filter(new() { HasText = "Vectors" });
+            var vectorValue = page.Locator(".status-card dd").Filter(new()
+            {
+                HasText = "in-memory deterministic vectors"
+            });
+            var labelBox = await vectorLabel.BoundingBoxAsync();
+            var valueBox = await vectorValue.BoundingBoxAsync();
+            Assert.NotNull(labelBox);
+            Assert.NotNull(valueBox);
+            Assert.True(
+                valueBox.X >= labelBox.X + labelBox.Width + 8,
+                "The vector-store value should not crowd or overlap its label.");
+
             await page.GetByLabel("Question").FillAsync("How does Aspire connect the API to Qdrant?");
             await page.GetByRole(AriaRole.Button, new() { Name = "Ask the stack" }).ClickAsync();
             await page.Locator(".response-card").WaitForAsync();
