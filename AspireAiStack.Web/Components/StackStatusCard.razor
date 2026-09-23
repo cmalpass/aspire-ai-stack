@@ -8,6 +8,8 @@
         <div><dt>Vectors</dt><dd>@Status.VectorStore</dd></div>
         <div><dt>Cache</dt><dd>@Status.Cache</dd></div>
         <div><dt>Secrets required</dt><dd>@(Status.SafeDefault ? "No" : "Provider dependent")</dd></div>
+        <div><dt>Prompt version</dt><dd>@Status.PromptVersion</dd></div>
+        <div><dt>Content capture</dt><dd>@(Status.SensitiveTelemetryEnabled ? "Enabled for development" : "Metadata only")</dd></div>
     </dl>
 </aside>
 

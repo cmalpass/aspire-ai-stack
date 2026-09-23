@@ -4,6 +4,9 @@
 .vs/
 .vscode/
 TestResults/
+deploy/compose/.env
+deploy/compose/.env.*
+!deploy/compose/.env.example
 *.user
 *.suo
 *.nupkg

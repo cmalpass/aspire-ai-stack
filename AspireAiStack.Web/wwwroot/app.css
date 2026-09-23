@@ -65,7 +65,7 @@ h1, h2, h3, h4 {
     max-width: 66ch;
 }
 
-.status-card, .demo-panel, .topology {
+.status-card, .dashboard-card, .demo-panel, .topology {
     background: rgba(13, 31, 51, .78);
     border: 1px solid rgba(119, 220, 255, .18);
     border-radius: 20px;
@@ -74,6 +74,23 @@ h1, h2, h3, h4 {
 
 .status-card {
     padding: 1.4rem;
+}
+
+.dashboard-card {
+    padding: 1.4rem;
+}
+
+.dashboard-card a {
+    color: #77dcff;
+    display: inline-block;
+    font-weight: 700;
+    margin: .4rem 0 .65rem;
+}
+
+.dashboard-card p:last-child {
+    color: #9fb1c3;
+    font-size: .9rem;
+    margin: 0;
 }
 
 .status-dot {
@@ -103,8 +120,20 @@ h1, h2, h3, h4 {
     margin: 1.25rem 0 0;
 }
 
-.status-card dl div, .response-metadata div {
+.status-card dl div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, 1.5fr);
+}
+
+.status-card dd {
+    overflow-wrap: anywhere;
+    text-align: right;
+}
+
+.response-metadata div {
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
 }
 
@@ -138,6 +167,78 @@ dd { margin: 0; }
 }
 
 .demo-panel form, .response-card { grid-column: 2; }
+
+.demo-expectation {
+    background: rgba(6, 16, 29, .72);
+    border-left: 3px solid #63d9ff;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+}
+
+.demo-expectation h3 {
+    font-size: 1.05rem;
+    margin-bottom: .7rem;
+}
+
+.demo-expectation ol {
+    color: #adc0d4;
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.demo-expectation li + li { margin-top: .65rem; }
+
+.seeded-topics {
+    margin-top: 1.5rem;
+}
+
+.seeded-topics h3 {
+    font-size: 1.05rem;
+    margin-bottom: .35rem;
+}
+
+.seeded-topics > p {
+    color: #8096ac;
+    font-size: .9rem;
+}
+
+.seeded-topic-list {
+    display: grid;
+    gap: .55rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.seeded-topic {
+    background: #102a46;
+    border: 1px solid #244f74;
+    border-radius: 10px;
+    color: #dce9f6;
+    display: block;
+    padding: .7rem .85rem;
+    text-align: left;
+    width: 100%;
+}
+
+.seeded-topic:hover, .seeded-topic:focus-visible {
+    background: #153b5f;
+    border-color: #63d9ff;
+}
+
+.seeded-topic span {
+    color: #9fb1c3;
+    display: block;
+    font-size: .86rem;
+    margin-top: .25rem;
+}
+
+.demo-note {
+    color: #8096ac;
+    font-size: .9rem;
+    margin: 1.2rem 0 0;
+}
 
 label { display: block; font-weight: 700; margin-bottom: .55rem; }
 

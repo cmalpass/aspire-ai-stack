@@ -20,4 +20,19 @@ jobs:
           dotnet-version: 10.0.x
       - run: dotnet restore AspireAiStack.sln
       - run: dotnet build AspireAiStack.sln --configuration Release --no-restore
-      - run: dotnet test AspireAiStack.sln --configuration Release --no-build --logger "console;verbosity=minimal"
+      - name: Validate generated Compose file
+        run: docker compose --env-file deploy/compose/.env.example -f deploy/compose/docker-compose.yaml config --quiet
+      - name: Install Chromium
+        run: pwsh AspireAiStack.Tests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+      - name: Run tests
+        env:
+          EVIDENCE_OUTPUT_DIR: ${{ github.workspace }}/TestResults/browser-smoke
+        run: dotnet test AspireAiStack.sln --configuration Release --no-build --logger "console;verbosity=minimal" --logger "trx;LogFileName=tests.trx" --results-directory TestResults
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-smoke-evidence
+          path: TestResults
+          if-no-files-found: error
+          retention-days: 14

@@ -16,6 +16,15 @@ public sealed record StackStatus(
     string AiMode,
     string VectorStore,
     string Cache,
-    bool SafeDefault);
+    bool SafeDefault,
+    string PromptVersion = AiTelemetry.PromptVersion,
+    string KnowledgeCorpusVersion = AiTelemetry.KnowledgeCorpusVersion,
+    bool SensitiveTelemetryEnabled = false);
 
-public sealed record KnowledgeDocument(ulong Id, string Title, string Content);
+public sealed record KnowledgeDocument(
+    ulong Id,
+    string Title,
+    string Content,
+    string SuggestedQuestion);
+
+public sealed record KnowledgeTopic(string Title, string SuggestedQuestion);

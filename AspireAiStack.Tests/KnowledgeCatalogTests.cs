@@ -5,6 +5,23 @@ namespace AspireAiStack.Tests;
 public sealed class KnowledgeCatalogTests
 {
     [Fact]
+    public void Catalog_ContainsTheSevenTopicsShownOnTheHomepage()
+    {
+        Assert.Equal(7, KnowledgeCatalog.Documents.Count);
+        Assert.Equal(
+            [
+                "AppHost orchestration",
+                "Service references",
+                "Built-in observability",
+                "Local AI development",
+                "Production boundaries",
+                "Vector search",
+                "Caching"
+            ],
+            KnowledgeCatalog.Documents.Select(document => document.Title));
+    }
+
+    [Fact]
     public void Embed_IsDeterministicAndNormalized()
     {
         var first = KnowledgeCatalog.Embed("Aspire connects application resources");

@@ -10,19 +10,26 @@ public static class KnowledgeCatalog
     public static IReadOnlyList<KnowledgeDocument> Documents { get; } =
     [
         new(1, "AppHost orchestration",
-            "The Aspire AppHost declares services, containers, dependencies, startup order, and endpoints in one application model."),
+            "The Aspire AppHost declares services, containers, dependencies, startup order, and endpoints in one application model.",
+            "What does the Aspire AppHost coordinate?"),
         new(2, "Service references",
-            "WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy."),
+            "WithReference passes connection information to a consuming service. WaitFor delays startup until a dependency reports ready or healthy.",
+            "How do WithReference and WaitFor differ?"),
         new(3, "Built-in observability",
-            "Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard."),
+            "Aspire service defaults emit logs, metrics, and distributed traces through OpenTelemetry and display them in the Aspire dashboard.",
+            "How does Aspire expose logs, metrics, and traces?"),
         new(4, "Local AI development",
-            "A local Ollama resource can provide a model endpoint without placing provider credentials in a browser or client application."),
+            "A local Ollama resource can provide a model endpoint without placing provider credentials in a browser or client application.",
+            "How does Ollama keep model access server-side?"),
         new(5, "Production boundaries",
-            "The AppHost application model is reusable, but production deployments still require deliberate choices for identity, persistence, scaling, backups, and managed services."),
+            "The AppHost application model is reusable, but production deployments still require deliberate choices for identity, persistence, scaling, backups, and managed services.",
+            "What production decisions remain after using Aspire?"),
         new(6, "Vector search",
-            "Qdrant stores embedding vectors and payloads. Similarity search retrieves relevant grounding passages before the model generates an answer."),
+            "Qdrant stores embedding vectors and payloads. Similarity search retrieves relevant grounding passages before the model generates an answer.",
+            "How does Qdrant ground an AI answer?"),
         new(7, "Caching",
-            "Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context."),
+            "Redis can cache repeated responses and shared application state, but cache keys must account for the prompt, model, and grounding context.",
+            "How does Redis handle repeated responses?"),
     ];
 
     public static float[] Embed(string text)

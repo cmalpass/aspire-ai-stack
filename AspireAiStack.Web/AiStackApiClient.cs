@@ -8,6 +8,10 @@ public sealed class AiStackApiClient(HttpClient httpClient)
         await httpClient.GetFromJsonAsync<StackStatus>("/api/status", cancellationToken)
         ?? throw new InvalidOperationException("The API returned an empty status response.");
 
+    public async Task<IReadOnlyList<KnowledgeTopic>> GetTopicsAsync(CancellationToken cancellationToken = default) =>
+        await httpClient.GetFromJsonAsync<IReadOnlyList<KnowledgeTopic>>("/api/knowledge/topics", cancellationToken)
+        ?? [];
+
     public async Task<ChatResponse> AskAsync(string prompt, CancellationToken cancellationToken = default)
     {
         using var response = await httpClient.PostAsJsonAsync(
@@ -32,4 +36,13 @@ public sealed record ChatResponse(
     bool CacheHit,
     IReadOnlyList<SourceCitation> Sources);
 
-public sealed record StackStatus(string AiMode, string VectorStore, string Cache, bool SafeDefault);
+public sealed record StackStatus(
+    string AiMode,
+    string VectorStore,
+    string Cache,
+    bool SafeDefault,
+    string PromptVersion = "grounded-answer-v2",
+    string KnowledgeCorpusVersion = "seeded-knowledge-v1",
+    bool SensitiveTelemetryEnabled = false);
+
+public sealed record KnowledgeTopic(string Title, string SuggestedQuestion);

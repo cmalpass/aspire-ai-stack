@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AspireAiStack.Tests;
 
+[Collection(AspireEndToEndCollection.Name)]
 public sealed class AppHostTests
 {
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(60);

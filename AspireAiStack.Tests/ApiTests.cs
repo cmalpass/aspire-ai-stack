@@ -26,6 +26,46 @@ public sealed class ApiTests : IClassFixture<ApiTests.ApiFactory>
     }
 
     [Fact]
+    public async Task KnowledgeTopics_ExposeTheSeededCatalogQuestions()
+    {
+        var topics = await _client.GetFromJsonAsync<IReadOnlyList<KnowledgeTopic>>(
+            "/api/knowledge/topics",
+            CancellationToken.None);
+
+        Assert.NotNull(topics);
+        Assert.Equal(KnowledgeCatalog.Documents.Count, topics.Count);
+        Assert.Equal(
+            KnowledgeCatalog.Documents.Select(document => document.Title),
+            topics.Select(topic => topic.Title));
+        Assert.All(topics, topic => Assert.False(string.IsNullOrWhiteSpace(topic.SuggestedQuestion)));
+    }
+
+    [Theory]
+    [InlineData("Development", "AI:CaptureTelemetryContent", true)]
+    [InlineData("Development", "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT", true)]
+    [InlineData("Production", "AI:CaptureTelemetryContent", false)]
+    [InlineData("Production", "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT", false)]
+    public async Task ContentCapture_RequiresDevelopment(
+        string environment, string setting, bool expected)
+    {
+        using var factory = new WebApplicationFactory<ApiAssemblyMarker>();
+        using var configured = factory.WithWebHostBuilder(builder =>
+        {
+            builder.UseEnvironment(environment);
+            builder.UseSetting("Infrastructure:UseRedis", "false");
+            builder.UseSetting("Infrastructure:UseQdrant", "false");
+            builder.UseSetting("AI:Mode", "simulated");
+            builder.UseSetting("AI:CaptureTelemetryContent", "false");
+            builder.UseSetting("OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT", "false");
+            builder.UseSetting(setting, "true");
+        });
+        using var client = configured.CreateClient();
+        var status = await client.GetFromJsonAsync<StackStatus>("/api/status");
+        Assert.NotNull(status);
+        Assert.Equal(expected, status.SensitiveTelemetryEnabled);
+    }
+
+    [Fact]
     public async Task Chat_ReturnsGroundedAnswerThenCacheHit()
     {
         var prompt = $"How does Aspire wiring work? {Guid.NewGuid():N}";
